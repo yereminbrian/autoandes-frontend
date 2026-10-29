@@ -13,7 +13,7 @@ La URL API local está en src/environments/environment.ts. La compilación de pr
 
 ## Cuentas locales de demostración
 
-Las cuentas semilla del backend usan Auto2026*: admin, asesor, jefe e inactivo. La cuenta inactiva debe ser rechazada. Cambia la clave local de demostración antes de cualquier despliegue.
+Las cuentas semilla del backend usan admin123, asesor123, jefe123 e inactivo123 (usuario en minúsculas + 123). La cuenta inactiva debe ser rechazada. Cambia estas claves antes de cualquier despliegue.
 
 ## Módulos
 
