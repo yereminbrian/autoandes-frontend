@@ -1,0 +1,8 @@
+<section class="page-heading">
+  <div><span class="eyebrow">RESUMEN DEL TALLER</span><h1>Bienvenido, {{ nombre() }}</h1><p>Gestiona el trabajo del día desde un solo lugar.</p></div>
+</section>
+<div class="welcome-card"><div class="welcome-mark">AA</div><div><h2>AutoAndes Web</h2><p>Consulta los servicios del taller y registra la flota de vehículos de tus clientes.</p></div></div>
+<div class="quick-grid">
+  <a routerLink="/servicios" *appSiPermiso="'SERVICIO_LEER'"><span>01</span><strong>Catálogo de servicios</strong><small>Consulta duración, precio y disponibilidad</small></a>
+  <a routerLink="/vehiculos" *appSiPermiso="'VEHICULO_LEER'"><span>02</span><strong>Vehículos</strong><small>Ubica vehículos por cliente</small></a>
+</div>

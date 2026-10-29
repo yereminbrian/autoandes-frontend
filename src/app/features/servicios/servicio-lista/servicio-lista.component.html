@@ -1,0 +1,18 @@
+<section class="page-heading">
+  <div><span class="eyebrow">CATÁLOGO</span><h1>Servicios</h1><p>Consulta y administra los servicios del taller.</p></div>
+  <a class="button button-primary" routerLink="/servicios/nuevo" *appSiPermiso="'SERVICIO_ESCRIBIR'">+ Nuevo servicio</a>
+</section>
+@if (error()) { <p class="notice notice-error" role="alert">{{ error() }}</p> }
+<section class="panel">
+  <div class="panel-toolbar"><label class="search-box"><span>⌕</span><input type="search" placeholder="Buscar por código o servicio" [value]="filtro()" (input)="filtro.set($any($event.target).value)"></label><span class="result-count">{{ filtrados().length }} servicios</span></div>
+  @if (cargando()) { <div class="loading-state">Cargando servicios...</div> }
+  @else if (filtrados().length === 0) { <div class="empty-inline"><strong>No hay servicios para mostrar</strong><span>Prueba otra búsqueda o registra un servicio.</span></div> }
+  @else {
+    <div class="table-wrap"><table><thead><tr><th>CÓDIGO</th><th>SERVICIO</th><th>DURACIÓN</th><th>PRECIO</th><th>ESTADO</th><th *appSiPermiso="'SERVICIO_ESCRIBIR'">ACCIONES</th></tr></thead>
+      <tbody>@for (item of filtrados(); track item.id) {
+        <tr><td><span class="code-chip">{{ item.codigo }}</span></td><td><strong>{{ item.nombre }}</strong></td><td>{{ item.duracionMin }} min</td><td>S/ {{ item.precio | number:'1.2-2' }}</td><td><span class="pill" [class.pill-muted]="!item.activo">{{ item.activo ? 'Activo' : 'Inactivo' }}</span></td>
+          <td class="row-actions" *appSiPermiso="'SERVICIO_ESCRIBIR'"><a class="button button-small button-outline" [routerLink]="['/servicios', item.id, 'editar']">Editar</a><button class="button button-small" type="button" (click)="cambiarEstado(item)">{{ item.activo ? 'Dar de baja' : 'Reactivar' }}</button></td></tr>
+      }</tbody>
+    </table></div>
+  }
+</section>

@@ -1,0 +1,13 @@
+<section class="page-heading"><div><span class="eyebrow">CATÁLOGO</span><h1>{{ id() ? 'Editar servicio' : 'Nuevo servicio' }}</h1><p>Completa los datos del servicio.</p></div><a class="button button-outline" routerLink="/servicios">← Volver</a></section>
+@if (error()) { <p class="notice notice-error" role="alert">{{ error() }}</p> }
+@if (cargando()) { <div class="loading-state">Cargando servicio...</div> } @else {
+<form class="panel form-panel" [formGroup]="form" (ngSubmit)="guardar()">
+  <div class="form-grid">
+    <label>Código <input formControlName="codigo" placeholder="SRV-009" maxlength="7"><small class="field-error" *ngIf="form.controls.codigo.touched && form.controls.codigo.invalid">Usa el formato SRV-000.</small><small class="field-error" *ngIf="campo('codigo')">{{ campo('codigo') }}</small></label>
+    <label>Nombre <input formControlName="nombre" placeholder="Cambio de aceite"><small class="field-error" *ngIf="form.controls.nombre.touched && form.controls.nombre.invalid">Escribe entre 3 y 80 caracteres.</small><small class="field-error" *ngIf="campo('nombre')">{{ campo('nombre') }}</small></label>
+    <label>Precio (S/) <input type="number" min="0.01" step="0.01" formControlName="precio"><small class="field-error" *ngIf="form.controls.precio.touched && form.controls.precio.invalid">El precio debe ser mayor que cero.</small><small class="field-error" *ngIf="campo('precio')">{{ campo('precio') }}</small></label>
+    <label>Duración (minutos) <input type="number" min="15" max="480" formControlName="duracionMin"><small class="field-error" *ngIf="form.controls.duracionMin.touched && form.controls.duracionMin.invalid">Usa un valor entre 15 y 480.</small><small class="field-error" *ngIf="campo('duracionMin')">{{ campo('duracionMin') }}</small></label>
+  </div>
+  <div class="form-actions"><a class="button button-outline" routerLink="/servicios">Cancelar</a><button class="button button-primary" [disabled]="guardando()">{{ guardando() ? 'Guardando...' : 'Guardar servicio' }}</button></div>
+</form>
+}

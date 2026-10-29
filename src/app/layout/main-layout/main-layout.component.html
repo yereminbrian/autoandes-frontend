@@ -1,0 +1,19 @@
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" routerLink="/inicio"><span class="brand-mark">AA</span><span>AutoAndes<small>Gestión de taller</small></span></a>
+    <p class="menu-label">MENÚ PRINCIPAL</p>
+    <nav>
+      @for (item of menu(); track item.ruta) {
+        <a [routerLink]="item.ruta" routerLinkActive="active"><span class="menu-icon">{{ item.icono }}</span>{{ item.etiqueta }}</a>
+      }
+    </nav>
+    <div class="sidebar-foot"><span class="status-dot"></span> Sesión protegida</div>
+  </aside>
+  <section class="main-area">
+    <header class="topbar">
+      <div><span class="eyebrow">AUTOANDES · TALLER MECÁNICO</span><strong>Panel de operaciones</strong></div>
+      <div class="user-area"><span class="avatar">{{ nombre().slice(0, 1).toUpperCase() }}</span><span class="user-name">{{ nombre() }}</span><button class="button button-ghost" type="button" (click)="salir()">Cerrar sesión</button></div>
+    </header>
+    <main class="content"><router-outlet /></main>
+  </section>
+</div>

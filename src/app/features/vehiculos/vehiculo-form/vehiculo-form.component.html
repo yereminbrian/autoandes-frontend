@@ -1,0 +1,14 @@
+<section class="page-heading"><div><span class="eyebrow">CLIENTES Y FLOTA</span><h1>{{ id() ? 'Editar vehículo' : 'Nuevo vehículo' }}</h1><p>Selecciona un cliente cargado desde AutoAndes API.</p></div><a class="button button-outline" routerLink="/vehiculos">← Volver</a></section>
+@if (error()) { <p class="notice notice-error" role="alert">{{ error() }}</p> }
+@if (cargando()) { <div class="loading-state">Cargando vehículo...</div> } @else {
+<form class="panel form-panel" [formGroup]="form" (ngSubmit)="guardar()">
+  <div class="form-grid">
+    <label>Placa <input formControlName="placa" placeholder="ABC-123" maxlength="7" style="text-transform:uppercase"><small class="field-error" *ngIf="form.controls.placa.touched && form.controls.placa.invalid">Usa el formato ABC-123.</small><small class="field-error" *ngIf="campo('placa')">{{ campo('placa') }}</small></label>
+    <label>Marca <input formControlName="marca" placeholder="Toyota"><small class="field-error" *ngIf="campo('marca')">{{ campo('marca') }}</small></label>
+    <label>Modelo <input formControlName="modelo" placeholder="Yaris"><small class="field-error" *ngIf="campo('modelo')">{{ campo('modelo') }}</small></label>
+    <label>Año <input type="number" min="1990" max="2027" formControlName="anio"><small class="field-error" *ngIf="form.controls.anio.touched && form.controls.anio.invalid">El año debe estar entre 1990 y 2027.</small><small class="field-error" *ngIf="campo('anio')">{{ campo('anio') }}</small></label>
+    <label class="span-two">Cliente<select formControlName="clienteId"><option [ngValue]="0">Seleccionar cliente</option>@for (cliente of clientes(); track cliente.id) { <option [ngValue]="cliente.id">{{ cliente.nombres }} · {{ cliente.documento }}</option> }</select><small class="field-error" *ngIf="form.controls.clienteId.touched && form.controls.clienteId.invalid">Selecciona un cliente.</small><small class="field-error" *ngIf="campo('clienteId')">{{ campo('clienteId') }}</small></label>
+  </div>
+  <div class="form-actions"><a class="button button-outline" routerLink="/vehiculos">Cancelar</a><button class="button button-primary" [disabled]="guardando()">{{ guardando() ? 'Guardando...' : 'Guardar vehículo' }}</button></div>
+</form>
+}

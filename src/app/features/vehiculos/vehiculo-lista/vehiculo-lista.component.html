@@ -1,0 +1,10 @@
+<section class="page-heading"><div><span class="eyebrow">CLIENTES Y FLOTA</span><h1>Vehículos</h1><p>Consulta la flota registrada por placa y cliente.</p></div><a class="button button-primary" routerLink="/vehiculos/nuevo" *appSiPermiso="'VEHICULO_ESCRIBIR'">+ Nuevo vehículo</a></section>
+@if (error()) { <p class="notice notice-error" role="alert">{{ error() }}</p> }
+<section class="panel">
+  <div class="panel-toolbar"><label class="filter-inline">Filtrar por cliente<select [value]="clienteId()" (change)="cambiarCliente($any($event.target).value)"><option value="">Todos los clientes</option>@for (cliente of clientes(); track cliente.id) { <option [value]="cliente.id">{{ cliente.nombres }} · {{ cliente.documento }}</option> }</select></label><span class="result-count">{{ visibles().length }} vehículos</span></div>
+  @if (cargando()) { <div class="loading-state">Cargando vehículos...</div> } @else if (visibles().length === 0) { <div class="empty-inline"><strong>No hay vehículos para mostrar</strong><span>Registra un vehículo para empezar.</span></div> } @else {
+  <div class="table-wrap"><table><thead><tr><th>PLACA</th><th>MARCA Y MODELO</th><th>AÑO</th><th>CLIENTE</th><th *appSiPermiso="'VEHICULO_ESCRIBIR'">ACCIONES</th></tr></thead><tbody>@for (item of visibles(); track item.id) {
+    <tr><td><span class="plate">{{ item.placa }}</span></td><td><strong>{{ item.marca }}</strong><span class="table-sub">{{ item.modelo }}</span></td><td>{{ item.anio }}</td><td>{{ item.clienteNombre }}</td><td class="row-actions" *appSiPermiso="'VEHICULO_ESCRIBIR'"><a class="button button-small button-outline" [routerLink]="['/vehiculos', item.id, 'editar']">Editar</a><button class="button button-small button-danger" (click)="eliminar(item)">Eliminar</button></td></tr>
+  }</tbody></table></div>
+  }
+</section>
