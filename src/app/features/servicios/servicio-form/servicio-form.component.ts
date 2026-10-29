@@ -41,11 +41,17 @@ export class ServicioFormComponent implements OnInit {
     const request: ServicioRequest = this.form.getRawValue();
     this.guardando.set(true);
     const id = this.id();
-    const action = id ? this.service.actualizar(id, request) : this.service.crear(request);
-    action.subscribe({
-      next: () => { this.guardando.set(false); void this.router.navigate(['/servicios']); },
-      error: err => { this.guardando.set(false); this.error.set(mensajeError(err)); this.campos.set(camposError(err)); },
-    });
+    const completado = () => { this.guardando.set(false); void this.router.navigate(['/servicios']); };
+    const fallido = (err: unknown) => {
+      this.guardando.set(false);
+      this.error.set(mensajeError(err));
+      this.campos.set(camposError(err));
+    };
+    if (id === null) {
+      this.service.crear(request).subscribe({ next: completado, error: fallido });
+    } else {
+      this.service.actualizar(id, request).subscribe({ next: completado, error: fallido });
+    }
   }
   campo(nombre: string): string { return this.campos()[nombre] ?? ''; }
 }

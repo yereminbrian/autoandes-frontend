@@ -9,7 +9,7 @@ SPA empresarial Angular para el caso AutoAndes del examen LP2.
 - Inicia con npm start o ng serve; abre http://localhost:4200.
 - El backend debe estar disponible en http://localhost:8080/api/v1 antes de ingresar.
 
-La URL API está en src/environments/environment.ts. No agregues contraseñas ni tokens al código o Git.
+La URL API local está en src/environments/environment.ts. La compilación de producción reemplaza ese archivo por src/environments/environment.production.ts, que usa la ruta relativa /api/v1; configura el servidor o proxy de despliegue para reenviar esa ruta al backend. Si el backend estará en otro dominio, cambia apiUrl en el archivo de producción por su URL HTTPS antes de compilar. No agregues contraseñas ni tokens al código o Git.
 
 ## Cuentas locales de demostración
 
