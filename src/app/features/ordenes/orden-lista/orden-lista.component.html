@@ -1,0 +1,13 @@
+<section class="page-heading"><div><span class="eyebrow">OPERACIONES</span><h1>Órdenes de servicio</h1><p>Consulta el historial de atención del taller.</p></div><a class="button button-primary" routerLink="/ordenes/nueva" *appSiPermiso="'ORDEN_REGISTRAR'">+ Nueva orden</a></section>
+@if (error()) { <p class="notice notice-error" role="alert">{{ error() }}</p> }
+<section class="panel">
+  <form class="filter-grid" (ngSubmit)="buscar()"><label>Placa<input [value]="placa()" (input)="placa.set($any($event.target).value)" placeholder="ABC-123"></label>
+    <label>Estado<select [value]="estado()" (change)="estado.set($any($event.target).value)"><option value="">Todos</option><option value="REGISTRADA">Registrada</option><option value="ANULADA">Anulada</option></select></label>
+    <label>Desde<input type="date" [value]="desde()" (input)="desde.set($any($event.target).value)"></label><label>Hasta<input type="date" [value]="hasta()" (input)="hasta.set($any($event.target).value)"></label>
+    <button class="button button-dark" type="submit">Buscar órdenes</button></form>
+  @if (cargando()) { <div class="loading-state">Consultando órdenes...</div> } @else if (filas().length === 0) { <div class="empty-inline"><strong>No se encontraron órdenes</strong><span>Prueba con otros filtros.</span></div> } @else {
+    <div class="table-wrap"><table><thead><tr><th>NÚMERO</th><th>FECHA</th><th>VEHÍCULO</th><th>CLIENTE</th><th>ESTADO</th><th>TOTAL</th><th></th></tr></thead><tbody>@for (item of filas(); track item.id) {
+      <tr><td><strong>{{ item.numero }}</strong></td><td>{{ item.fecha | date:'dd/MM/yyyy HH:mm' }}</td><td><span class="plate">{{ item.placa }}</span></td><td>{{ item.cliente }}</td><td><span class="pill" [class.pill-muted]="item.estado === 'ANULADA'">{{ item.estado }}</span></td><td>S/ {{ item.total | number:'1.2-2' }}</td><td><a class="button button-small button-outline" [routerLink]="['/ordenes', item.id]">Ver detalle</a></td></tr>
+    }</tbody></table></div>
+  }
+</section>

@@ -1,0 +1,21 @@
+<section class="page-heading"><div><span class="eyebrow">OPERACIONES</span><h1>Nueva orden</h1><p>El backend toma precios vigentes y vuelve a calcular el total antes de guardar.</p></div><a class="button button-outline" routerLink="/ordenes">← Ver órdenes</a></section>
+@if (resultado(); as creada) { <div class="notice notice-success" role="status">Orden <strong>{{ creada.numero }}</strong> registrada por S/ {{ creada.total | number:'1.2-2' }}. <a [routerLink]="['/ordenes', creada.id]">Ver detalle</a><button class="text-button" type="button" (click)="nueva()">Crear otra</button></div> }
+@if (error()) { <p class="notice notice-error" role="alert">{{ error() }}</p> }
+@if (cargando()) { <div class="loading-state">Cargando vehículos y servicios desde la API...</div> } @else {
+<form class="order-form" (ngSubmit)="registrar()">
+  <section class="panel form-panel"><div class="section-title"><span class="step">01</span><div><h2>Datos del vehículo</h2><p>Selecciona el vehículo y registra el kilometraje actual.</p></div></div>
+    <div class="form-grid"><label class="span-two">Vehículo<select [formControl]="encabezado.controls.vehiculoId"><option [ngValue]="0">Seleccionar vehículo</option>@for (v of vehiculos(); track v.id) { <option [ngValue]="v.id">{{ v.placa }} · {{ v.marca }} {{ v.modelo }} — {{ v.clienteNombre }}</option> }</select></label>
+      <label>Kilometraje (km)<input type="number" min="0" [formControl]="encabezado.controls.kilometraje"></label></div>
+  </section>
+  <section class="panel form-panel"><div class="section-title"><span class="step">02</span><div><h2>Servicios solicitados</h2><p>Agrega de 1 a 10 servicios. No se permite repetir servicios.</p></div><button class="button button-outline button-small" type="button" (click)="agregarLinea()" [disabled]="lineas.length >= 10">+ Añadir línea</button></div>
+    <div class="table-wrap"><table><thead><tr><th>SERVICIO</th><th>CANTIDAD</th><th>PRECIO UNITARIO</th><th>SUBTOTAL</th><th></th></tr></thead><tbody>
+      @for (linea of lineas.controls; track $index; let i = $index) {
+        <tr [formGroup]="linea"><td><select formControlName="servicioId"><option [ngValue]="0">Seleccionar servicio</option>@for (s of servicios(); track s.id) { <option [ngValue]="s.id" [disabled]="servicioOcupado(i, s.id)">{{ s.codigo }} · {{ s.nombre }} (S/ {{ s.precio | number:'1.2-2' }})</option> }</select></td>
+          <td><input class="quantity-input" type="number" min="1" max="5" formControlName="cantidad"></td><td>S/ {{ precio(i) | number:'1.2-2' }}</td><td><strong>S/ {{ subtotal(i) | number:'1.2-2' }}</strong></td><td><button class="icon-button" type="button" (click)="quitarLinea(i)" [disabled]="lineas.length === 1" aria-label="Quitar línea">×</button></td></tr>
+      }
+    </tbody></table></div>
+    <div class="total-row"><span>Total estimado</span><strong>S/ {{ total() | number:'1.2-2' }}</strong></div>
+  </section>
+  <div class="form-actions"><button class="button button-primary" type="submit" [disabled]="enviando() || !!resultado()">{{ enviando() ? 'Registrando orden...' : 'Registrar orden' }}</button></div>
+</form>
+}
